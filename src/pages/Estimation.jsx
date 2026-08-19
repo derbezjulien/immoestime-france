@@ -2,12 +2,10 @@ import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Home as HomeIcon, MapPin, Calculator, Loader2, AlertCircle, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { base44 } from "@/api/base44Client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-
-const BAN_URL = "https://api-adresse.data.gouv.fr/search/";
-const DVF_URL = "https://api.cquest.org/dvf";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -41,9 +39,8 @@ export default function Estimation() {
     }
     const t = setTimeout(async () => {
       try {
-        const res = await fetch(`${BAN_URL}?q=${encodeURIComponent(value)}&limit=8`);
-        const data = await res.json();
-        setSuggestions(data.features || []);
+        const response = await base44.functions.invoke("searchAddress", { query: value });
+        setSuggestions(response.data.features || []);
       } catch (e) {
         setError("Impossible de contacter l'API d'adresse.");
       }
@@ -64,11 +61,10 @@ export default function Estimation() {
     setResult(null);
     setRecentSales([]);
     try {
-      const lat = selected.geometry.coordinates[1];
-      const lon = selected.geometry.coordinates[0];
-      const res = await fetch(`${DVF_URL}?lat=${lat}&lon=${lon}&dist=500`);
-      if (!res.ok) throw new Error("API DVF indisponible");
-      const data = await res.json();
+      const citycode = selected.properties.citycode;
+      const commune = selected.properties.city || selected.properties.name || "";
+      const response = await base44.functions.invoke("fetchDvf", { citycode, commune });
+      const data = response.data;
       const features = data.features || [];
 
       const cutoff = new Date();
