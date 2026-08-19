@@ -67,6 +67,10 @@ module.exports = {
   			display: ['var(--font-display)'],
   			mono: ['var(--font-mono)']
   		},
+  		boxShadow: {
+  			soft: '0 4px 24px -6px rgba(30, 41, 59, 0.10), 0 2px 6px -2px rgba(30, 41, 59, 0.06)',
+  			glow: '0 0 50px -10px rgba(203, 163, 40, 0.50), 0 10px 30px -12px rgba(30, 41, 59, 0.25)'
+  		},
   		keyframes: {
   			'accordion-down': {
   				from: {

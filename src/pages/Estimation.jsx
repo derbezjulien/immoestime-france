@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Home as HomeIcon, MapPin, Calculator, Loader2, AlertCircle, Building2 } from "lucide-react";
+import { Home as HomeIcon, MapPin, Calculator, Loader2, AlertCircle, Building2, Sparkles, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
 import { Input } from "@/components/ui/input";
@@ -106,18 +106,23 @@ export default function Estimation() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <header className="border-b border-border/60 bg-card/70 backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-heading font-semibold">
-            <HomeIcon className="w-5 h-5" />
+          <Link to="/" className="flex items-center gap-2 font-heading font-semibold text-primary">
+            <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground">
+              <HomeIcon className="w-4 h-4" />
+            </span>
             ImmoEstim
           </Link>
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" /> Estimation
+          </span>
         </div>
       </header>
 
       <main className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-heading font-bold tracking-tight mb-2">
+          <h1 className="text-3xl md:text-4xl font-heading font-bold tracking-tight mb-2 text-primary">
             Estimation immobilière
           </h1>
           <p className="text-muted-foreground">
@@ -125,30 +130,30 @@ export default function Estimation() {
           </p>
         </div>
 
-        <Card className="mb-6">
+        <Card className="mb-6 shadow-soft">
           <CardContent className="pt-6 space-y-4">
             {/* Adresse */}
             <div className="relative">
-              <Label htmlFor="address">Adresse du bien</Label>
+              <Label htmlFor="address" className="text-primary font-medium">Adresse du bien</Label>
               <div className="relative mt-1.5">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
                 <Input
                   id="address"
                   value={query}
                   onChange={(e) => onQueryChange(e.target.value)}
                   placeholder="Ex : 10 cours Foch, Podensac"
-                  className="pl-9"
+                  className="pl-10"
                 />
               </div>
               {suggestions.length > 0 && (
-                <div className="absolute z-10 mt-1 w-full rounded-md border bg-popover shadow-md max-h-60 overflow-auto">
+                <div className="absolute z-10 mt-1.5 w-full rounded-xl border border-border/60 bg-popover shadow-soft max-h-60 overflow-auto">
                   {suggestions.map((f, i) => (
                     <button
                       key={i}
                       onClick={() => selectAddress(f)}
-                      className="w-full text-left px-3 py-2 hover:bg-accent border-b last:border-b-0"
+                      className="w-full text-left px-3.5 py-2.5 hover:bg-accent/10 border-b border-border/40 last:border-b-0 transition-colors"
                     >
-                      <div className="text-sm font-medium">{f.properties.label}</div>
+                      <div className="text-sm font-medium text-primary">{f.properties.label}</div>
                       {f.properties.context && (
                         <div className="text-xs text-muted-foreground">{f.properties.context}</div>
                       )}
@@ -160,9 +165,9 @@ export default function Estimation() {
 
             {/* Surface */}
             <div>
-              <Label htmlFor="surface">Surface habitable (m²)</Label>
+              <Label htmlFor="surface" className="text-primary font-medium">Surface habitable (m²)</Label>
               <div className="relative mt-1.5">
-                <Calculator className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Calculator className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
                 <Input
                   id="surface"
                   type="number"
@@ -170,7 +175,7 @@ export default function Estimation() {
                   value={surface}
                   onChange={(e) => setSurface(e.target.value)}
                   placeholder="Ex : 90"
-                  className="pl-9"
+                  className="pl-10"
                   disabled={!selected}
                 />
               </div>
@@ -179,7 +184,7 @@ export default function Estimation() {
             <Button
               onClick={estimate}
               disabled={!selected || !surface || Number(surface) <= 0 || loading}
-              className="w-full"
+              className="w-full h-12 text-base shadow-soft"
             >
               {loading ? (
                 <>
@@ -194,7 +199,7 @@ export default function Estimation() {
         </Card>
 
         {error && (
-          <div className="flex items-start gap-2 p-4 mb-6 rounded-md border border-destructive/30 bg-destructive/5 text-destructive text-sm">
+          <div className="flex items-start gap-2.5 p-4 mb-6 rounded-xl border border-destructive/30 bg-destructive/5 text-destructive text-sm">
             <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
             <span>{error}</span>
           </div>
@@ -202,43 +207,54 @@ export default function Estimation() {
 
         {result && (
           <>
-            <Card className="mb-6">
-              <CardContent className="pt-6 text-center">
-                <div className="text-sm font-medium text-muted-foreground mb-1">
-                  Estimation
-                </div>
-                <div className="text-4xl font-heading font-bold text-primary mb-3">
+            <Card className="mb-8 relative overflow-hidden border-0 bg-primary text-primary-foreground shadow-glow">
+              <div
+                className="absolute inset-0 pointer-events-none opacity-25"
+                style={{ backgroundImage: "radial-gradient(circle at 85% -20%, #CBA328 0, transparent 60%)" }}
+              />
+              <CardContent className="relative pt-8 pb-8 text-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/15 text-accent text-xs font-semibold px-3 py-1 mb-4 ring-1 ring-accent/30">
+                  <Sparkles className="w-3.5 h-3.5" /> Estimation
+                </span>
+                <div className="text-5xl md:text-6xl font-heading font-extrabold text-accent mb-4 tracking-tight">
                   {euro.format(result.estimatedPrice)}
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  Prix moyen : {euro.format(result.averagePricePerSqm)}/m² — sur {result.sampleSize} vente
-                  {result.sampleSize > 1 ? "s" : ""} récente{result.sampleSize > 1 ? "s" : ""}
+                <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm text-primary-foreground/80 ring-1 ring-white/10">
+                  <TrendingUp className="w-4 h-4 text-accent" />
+                  Prix moyen : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
+                  <span className="text-primary-foreground/40">•</span>
+                  sur {result.sampleSize} vente{result.sampleSize > 1 ? "s" : ""} récente{result.sampleSize > 1 ? "s" : ""}
                 </div>
               </CardContent>
             </Card>
 
-            <h2 className="text-xl font-heading font-semibold mb-3">
+            <h2 className="text-xl font-heading font-semibold mb-4 text-primary flex items-center gap-2">
+              <span className="inline-block w-1.5 h-5 rounded-full bg-accent" />
               Ventes récentes à proximité
             </h2>
-            <div className="space-y-2">
-              {recentSales.map((sale, i) => (
-                <Card key={i}>
-                  <CardContent className="py-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
-                      <Building2 className="w-5 h-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium">
-                        {sale.type_local} • {Math.round(sale.surface_reelle_bati)} m²
+            <div className="grid gap-3 sm:grid-cols-2">
+              {recentSales.map((sale, i) => {
+                const isHouse = sale.type_local === "Maison";
+                const Icon = isHouse ? HomeIcon : Building2;
+                return (
+                  <Card key={i} className="transition-all hover:shadow-md hover:-translate-y-0.5">
+                    <CardContent className="py-4 flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 ring-1 ring-accent/20">
+                        <Icon className="w-5 h-5 text-accent" />
                       </div>
-                      <div className="text-sm text-muted-foreground">
-                        {sale.nom_commune || ""} — vendue {euro.format(sale.valeur_fonciere)} en{" "}
-                        {formatYear(sale.date_mutation)}
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-primary">
+                          {sale.type_local} • {Math.round(sale.surface_reelle_bati)} m²
+                        </div>
+                        <div className="text-sm text-muted-foreground truncate">
+                          {sale.nom_commune || ""} — vendue {euro.format(sale.valeur_fonciere)} en{" "}
+                          {formatYear(sale.date_mutation)}
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </>
         )}
