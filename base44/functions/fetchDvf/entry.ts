@@ -1,3 +1,33 @@
+const RETRYABLE_STATUS = new Set([500, 502, 503, 504]);
+const MAX_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 2000;
+
+async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Relance automatique sur erreurs serveur (500/502/503/504) :
+// 3 tentatives max, 2s d'attente non-bloquante entre chaque.
+async function fetchWithRetry(url) {
+  let lastStatus = 0;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok || !RETRYABLE_STATUS.has(res.status)) return res;
+      lastStatus = res.status;
+    } catch (e) {
+      // erreur réseau -> relançable
+      lastStatus = 502;
+    }
+    if (attempt < MAX_ATTEMPTS) {
+      await sleep(RETRY_DELAY_MS);
+    }
+  }
+  const err = new Error("DVF_UNAVAILABLE");
+  err.status = lastStatus || 502;
+  throw err;
+}
+
 export default async function(req) {
   try {
     const body = await req.json();
@@ -14,8 +44,7 @@ export default async function(req) {
     const features = [];
     let pages = 0;
     while (url && pages < 3) {
-      const res = await fetch(url);
-      if (!res.ok) return Response.json({ error: "API DVF indisponible" }, { status: 502 });
+      const res = await fetchWithRetry(url);
       const data = await res.json();
       for (const m of data.results || []) {
         const type = m.libtypbien || "";
@@ -40,6 +69,9 @@ export default async function(req) {
     }
     return Response.json({ features });
   } catch (error) {
+    if (error.message === "DVF_UNAVAILABLE") {
+      return Response.json({ error: "DVF_UNAVAILABLE" }, { status: 502 });
+    }
     return Response.json({ error: error.message }, { status: 500 });
   }
 }

@@ -98,7 +98,12 @@ export default function Estimation() {
           .slice(0, 4)
       );
     } catch (e) {
-      setError(e.message || "Erreur lors de l'estimation.");
+      const msg = (e && e.message) || "";
+      if (msg.includes("DVF_UNAVAILABLE") || msg.includes("API DVF")) {
+        setError("Les serveurs fonciers sont momentanément très sollicités. Veuillez réessayer dans quelques instants.");
+      } else {
+        setError(msg || "Erreur lors de l'estimation.");
+      }
     } finally {
       setLoading(false);
     }
