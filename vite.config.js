@@ -17,9 +17,10 @@ export default defineConfig({
     react()
   ],
   build: {
-    // Cible des navigateurs plus anciens (legacy) : transpile la syntaxe moderne
-    // (optional chaining, nullish coalescing...) vers ES2015 pour éviter l'écran
-    // blanc sur les vieux appareils / anciens navigateurs.
-    target: ['es2015', 'safari11', 'chrome61', 'firefox60', 'edge16']
+    // Cible des navigateurs plus anciens (legacy) : ES2018 reste compatible avec les
+    // vieilles tablettes / anciens navigateurs (Safari 11.1+, Chrome 60+, Firefox 60+)
+    // tout en permettant à esbuild d'abaisser la syntaxe moderne (optional chaining,
+    // nullish coalescing...) sans échec sur le destructuring.
+    target: ['es2018', 'safari11.1', 'chrome60', 'firefox60']
   }
 });
