@@ -99,7 +99,9 @@ export default function Estimation() {
       );
     } catch (e) {
       const msg = (e && e.message) || "";
-      if (msg.includes("DVF_UNAVAILABLE") || msg.includes("API DVF")) {
+      if (msg.includes("DVF_TIMEOUT")) {
+        setError("La connexion est trop lente. Vérifiez votre réseau et réessayez.");
+      } else if (msg.includes("DVF_UNAVAILABLE") || msg.includes("API DVF")) {
         setError("Les serveurs fonciers sont momentanément très sollicités. Veuillez réessayer dans quelques instants.");
       } else {
         setError(msg || "Erreur lors de l'estimation.");

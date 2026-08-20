@@ -8,15 +8,27 @@ async function sleep(ms) {
 
 // Relance automatique sur erreurs serveur (500/502/503/504) :
 // 3 tentatives max, 2s d'attente non-bloquante entre chaque.
+const REQUEST_TIMEOUT_MS = 15000;
+
 async function fetchWithRetry(url) {
   let lastStatus = 0;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
       if (res.ok || !RETRYABLE_STATUS.has(res.status)) return res;
       lastStatus = res.status;
     } catch (e) {
-      // erreur réseau -> relançable
+      clearTimeout(timer);
+      // connexion trop lente (timeout) : pas de relance, échec immédiat
+      if (e && e.name === "AbortError") {
+        const err = new Error("DVF_TIMEOUT");
+        err.status = 504;
+        throw err;
+      }
+      // autre erreur réseau -> relançable
       lastStatus = 502;
     }
     if (attempt < MAX_ATTEMPTS) {
@@ -69,6 +81,9 @@ export default async function(req) {
     }
     return Response.json({ features });
   } catch (error) {
+    if (error.message === "DVF_TIMEOUT") {
+      return Response.json({ error: "DVF_TIMEOUT" }, { status: 504 });
+    }
     if (error.message === "DVF_UNAVAILABLE") {
       return Response.json({ error: "DVF_UNAVAILABLE" }, { status: 502 });
     }
