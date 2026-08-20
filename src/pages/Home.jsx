@@ -43,9 +43,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3 ring-1 ring-accent/20">
               <MapPin className="w-6 h-6 text-accent" />
             </div>
-            <CardTitle className="text-primary text-lg">Adresse précise</CardTitle>
+            <CardTitle className="text-primary text-lg">Localisation Certifiée</CardTitle>
             <CardDescription>
-              Saisissez votre adresse avec autocomplétion via la Base Adresse Nationale.
+              Saisissez simplement l'adresse de votre propriété. Notre système la valide instantanément en s'appuyant sur les registres officiels de l'État pour garantir une précision absolue.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -54,9 +54,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3 ring-1 ring-accent/20">
               <Calculator className="w-6 h-6 text-accent" />
             </div>
-            <CardTitle className="text-primary text-lg">Calcul au m²</CardTitle>
+            <CardTitle className="text-primary text-lg">Évaluation Sur-Mesure</CardTitle>
             <CardDescription>
-              Indiquez la surface habitable et obtenez une estimation instantanée.
+              Renseignez la surface habitable de votre bien. Obtenez en un clic une valorisation immédiate, personnalisée et strictement confidentielle de votre patrimoine.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -65,9 +65,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3 ring-1 ring-accent/20">
               <TrendingUp className="w-6 h-6 text-accent" />
             </div>
-            <CardTitle className="text-primary text-lg">Ventes réelles</CardTitle>
+            <CardTitle className="text-primary text-lg">Historique Notarié</CardTitle>
             <CardDescription>
-              Prix moyen calculé sur les ventes DVF des 3 dernières années à proximité.
+              Votre prix de référence est calculé exclusivement à partir des véritables actes de vente enregistrés par les notaires dans votre quartier au cours des trois dernières années.
             </CardDescription>
           </CardHeader>
         </Card>
