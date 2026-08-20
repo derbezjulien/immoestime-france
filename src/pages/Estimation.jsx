@@ -6,6 +6,7 @@ import { base44 } from "@/api/base44Client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import SaleDetailDialog from "@/components/SaleDetailDialog";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -26,6 +27,7 @@ export default function Estimation() {
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
   const [recentSales, setRecentSales] = useState([]);
+  const [selectedSale, setSelectedSale] = useState(null);
   const [debounceTimer, setDebounceTimer] = useState(null);
 
   const onQueryChange = (value) => {
@@ -244,7 +246,14 @@ export default function Estimation() {
                 const isHouse = sale.type_local === "Maison";
                 const Icon = isHouse ? HomeIcon : Building2;
                 return (
-                  <Card key={i} className="transition-all hover:shadow-md hover:-translate-y-0.5">
+                  <Card
+                    key={i}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setSelectedSale(sale)}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedSale(sale); } }}
+                    className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-accent/40"
+                  >
                     <CardContent className="py-4 flex items-center gap-3">
                       <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 ring-1 ring-accent/20">
                         <Icon className="w-5 h-5 text-accent" />
@@ -265,6 +274,12 @@ export default function Estimation() {
             </div>
           </>
         )}
+
+        <SaleDetailDialog
+          sale={selectedSale}
+          open={!!selectedSale}
+          onOpenChange={(o) => { if (!o) setSelectedSale(null); }}
+        />
       </main>
     </div>
   );
