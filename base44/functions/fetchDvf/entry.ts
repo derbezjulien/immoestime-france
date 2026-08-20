@@ -51,11 +51,11 @@ export default async function(req) {
 
     const yearMin = new Date().getFullYear() - 3;
     const base = "https://apidf-preprod.cerema.fr/dvf_opendata/mutations/";
-    let url = `${base}?code_insee=${citycode}&anneemut_min=${yearMin}&page_size=500`;
+    let url = `${base}?code_insee=${citycode}&anneemut_min=${yearMin}&page_size=200`;
 
     const features = [];
     let pages = 0;
-    while (url && pages < 3) {
+    while (url && pages < 2) {
       const res = await fetchWithRetry(url);
       const data = await res.json();
       for (const m of data.results || []) {
@@ -66,11 +66,14 @@ export default async function(req) {
         const valeur = parseFloat(m.valeurfonc);
         const sbati = parseFloat(m.sbati);
         if (!valeur || valeur <= 0 || !sbati || sbati <= 0) continue;
+        const sterr = parseFloat(m.sterr);
         features.push({
           properties: {
             date_mutation: m.datemut,
             valeur_fonciere: valeur,
             surface_reelle_bati: sbati,
+            surface_terrain: sterr > 0 ? sterr : null,
+            nombre_pieces_principales: null,
             type_local: isHouse ? "Maison" : "Appartement",
             nom_commune: commune,
           },

@@ -20,6 +20,7 @@ function buildAddress(s) {
   const cp = s.code_postal || "";
   const commune = s.nom_commune || "";
   const line1 = `${num} ${voie}`.trim();
+  if (!line1) return null;
   const line2 = `${cp} ${commune}`.trim();
   return [line1, line2].filter(Boolean).join(", ") || null;
 }
@@ -39,7 +40,7 @@ function Row({ icon: Icon, label, value }) {
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-xs text-muted-foreground">{label}</div>
-        <div className="text-sm font-medium text-primary break-words">{value || "—"}</div>
+        <div className="text-sm font-medium text-primary break-words">{value || "Non renseigné"}</div>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Home as HomeIcon, MapPin, Calculator, Loader2, AlertCircle, Building2, Sparkles, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
+import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -19,6 +20,7 @@ function formatYear(dateIso) {
 }
 
 export default function Estimation() {
+  const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -101,10 +103,10 @@ export default function Estimation() {
       );
     } catch (e) {
       const msg = (e && e.message) || "";
-      if (msg.includes("DVF_TIMEOUT")) {
-        setError("La connexion est trop lente. Vérifiez votre réseau et réessayez.");
-      } else if (msg.includes("DVF_UNAVAILABLE") || msg.includes("API DVF")) {
-        setError("Les serveurs fonciers sont momentanément très sollicités. Veuillez réessayer dans quelques instants.");
+      if (msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504")) {
+        toast({
+          description: "Le serveur des données foncières est surchargé, veuillez réessayer.",
+        });
       } else {
         setError(msg || "Erreur lors de l'estimation.");
       }
