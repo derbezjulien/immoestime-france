@@ -113,7 +113,7 @@ export default function Estimation() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/60 bg-card/70 backdrop-blur-sm sticky top-0 z-20">
+      <header className="hidden md:block border-b border-border/60 bg-card/70 backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-heading font-semibold text-primary">
             <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground">

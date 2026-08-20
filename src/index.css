@@ -87,5 +87,17 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    overscroll-behavior-y: none;
+  }
+
+  /* Empêche le surlignage/la sélection sur les éléments interactifs (WebView Android) */
+  button,
+  input,
+  textarea,
+  [role="tab"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
   }
 }
