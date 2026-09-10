@@ -103,9 +103,9 @@ export default function Estimation() {
       );
     } catch (e) {
       const msg = (e && e.message) || "";
-      if (msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504")) {
+      if (msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504") || msg.includes("502")) {
         toast({
-          description: "Le serveur des données foncières est surchargé, veuillez réessayer.",
+          description: "Le serveur officiel des données foncières (Cerema) est momentanément indisponible. Réessayez dans quelques minutes — les communes déjà consultées restent disponibles.",
         });
       } else {
         setError(msg || "Erreur lors de l'estimation.");

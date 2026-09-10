@@ -1,9 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.44';
 
 const RETRYABLE_STATUS = new Set([500, 502, 503, 504]);
-const MAX_ATTEMPTS = 2;
-const RETRY_DELAY_MS = 2000;
-const REQUEST_TIMEOUT_MS = 8000;
+const MAX_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 1500;
+const REQUEST_TIMEOUT_MS = 10000;
 // Les données DVF sont mises à jour une fois par mois : un cache de 7 jours est sûr.
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
