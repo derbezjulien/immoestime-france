@@ -1,0 +1,21 @@
+{
+  "name": "DvfCache",
+  "type": "object",
+  "properties": {
+    "citycode": {
+      "type": "string"
+    },
+    "commune": {
+      "type": "string"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "required": [
+    "citycode"
+  ]
+}
