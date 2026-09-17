@@ -103,10 +103,33 @@ export default function Estimation() {
       );
     } catch (e) {
       const msg = (e && e.message) || "";
-      if (msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504") || msg.includes("502")) {
-        toast({
-          description: "Le serveur officiel des données foncières (Cerema) est momentanément indisponible. Réessayez dans quelques minutes — les communes déjà consultées restent disponibles.",
-        });
+      const isServerDown =
+        msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504") || msg.includes("502");
+
+      if (isServerDown) {
+        // Mode dégradé : l'API est en panne et aucune donnée n'était en cache.
+        // On se replie sur le dictionnaire national statique des prix moyens au m².
+        try {
+          const fallbackModule = await import("@/data/fallback_national.json");
+          const citycode = selected.properties.citycode;
+          const avgPerSqm = fallbackModule.default?.[citycode] ?? fallbackModule[citycode];
+          if (avgPerSqm && avgPerSqm > 0) {
+            const estimatedPrice = avgPerSqm * Number(surface);
+            setResult({
+              estimatedPrice,
+              averagePricePerSqm: avgPerSqm,
+              fallback: true,
+              fallbackCommune: selected.properties.city || selected.properties.name || "",
+            });
+            setRecentSales([]);
+          } else {
+            setError(
+              "Le serveur officiel des données foncières est indisponible et aucune moyenne de référence n'existe pour cette commune. Réessayez plus tard."
+            );
+          }
+        } catch {
+          setError("Le serveur des données foncières est indisponible. Réessayez dans quelques minutes.");
+        }
       } else {
         setError(msg || "Erreur lors de l'estimation.");
       }
@@ -230,21 +253,35 @@ export default function Estimation() {
                 <div className="text-5xl md:text-6xl font-heading font-extrabold text-accent mb-4 tracking-tight">
                   {euro.format(result.estimatedPrice)}
                 </div>
-                <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm text-primary-foreground/80 ring-1 ring-white/10">
-                  <TrendingUp className="w-4 h-4 text-accent" />
-                  Prix moyen : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
-                  <span className="text-primary-foreground/40">•</span>
-                  sur {result.sampleSize} vente{result.sampleSize > 1 ? "s" : ""} récente{result.sampleSize > 1 ? "s" : ""}
-                </div>
+                {result.fallback ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm text-primary-foreground/80 ring-1 ring-white/10">
+                      <TrendingUp className="w-4 h-4 text-accent" />
+                      Prix moyen de référence : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
+                    </div>
+                    <p className="mt-4 text-xs text-primary-foreground/70 italic">
+                      Estimation basée sur la moyenne communale ({result.fallbackCommune}) — mode dégradé, données indicatives.
+                    </p>
+                  </>
+                ) : (
+                  <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm text-primary-foreground/80 ring-1 ring-white/10">
+                    <TrendingUp className="w-4 h-4 text-accent" />
+                    Prix moyen : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
+                    <span className="text-primary-foreground/40">•</span>
+                    sur {result.sampleSize} vente{result.sampleSize > 1 ? "s" : ""} récente{result.sampleSize > 1 ? "s" : ""}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            <h2 className="text-xl font-heading font-semibold mb-4 text-primary flex items-center gap-2">
-              <span className="inline-block w-1.5 h-5 rounded-full bg-accent" />
-              Ventes récentes à proximité
-            </h2>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {recentSales.map((sale, i) => {
+            {!result.fallback && (
+              <>
+                <h2 className="text-xl font-heading font-semibold mb-4 text-primary flex items-center gap-2">
+                  <span className="inline-block w-1.5 h-5 rounded-full bg-accent" />
+                  Ventes récentes à proximité
+                </h2>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {recentSales.map((sale, i) => {
                 const isHouse = sale.type_local === "Maison";
                 const Icon = isHouse ? HomeIcon : Building2;
                 return (
@@ -273,7 +310,9 @@ export default function Estimation() {
                   </Card>
                 );
               })}
-            </div>
+                </div>
+              </>
+            )}
           </>
         )}
 
