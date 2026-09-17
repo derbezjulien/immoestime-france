@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import SaleDetailDialog from "@/components/SaleDetailDialog";
-import fallbackData from "@/data/fallbackPrices.json";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -96,7 +95,7 @@ export default function Estimation() {
         sales.length;
       const estimatedPrice = avgPerSqm * Number(surface);
 
-      setResult({ estimatedPrice, averagePricePerSqm: avgPerSqm, sampleSize: sales.length, fallback: false });
+      setResult({ estimatedPrice, averagePricePerSqm: avgPerSqm, sampleSize: sales.length });
       setRecentSales(
         [...sales]
           .sort((a, b) => (b.date_mutation || "").localeCompare(a.date_mutation || ""))
@@ -104,25 +103,10 @@ export default function Estimation() {
       );
     } catch (e) {
       const msg = (e && e.message) || "";
-      const isServerDown = msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504") || msg.includes("502");
-      if (isServerDown) {
-        // Mode dégradé : repli sur le dictionnaire statique de secours
-        const postcode = selected.properties.postcode || "";
-        const entry = fallbackData.communes[postcode];
-        if (entry) {
-          const avgPerSqm = entry.prix_m2;
-          const estimatedPrice = avgPerSqm * Number(surface);
-          setResult({
-            estimatedPrice,
-            averagePricePerSqm: avgPerSqm,
-            sampleSize: null,
-            fallback: true,
-            fallbackCommune: entry.nom,
-          });
-          setRecentSales([]);
-        } else {
-          setError("Serveur DVF indisponible et aucune moyenne de secours pour cette commune. Réessayez plus tard.");
-        }
+      if (msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504") || msg.includes("502")) {
+        toast({
+          description: "Le serveur officiel des données foncières (Cerema) est momentanément indisponible. Réessayez dans quelques minutes — les communes déjà consultées restent disponibles.",
+        });
       } else {
         setError(msg || "Erreur lors de l'estimation.");
       }
@@ -246,35 +230,21 @@ export default function Estimation() {
                 <div className="text-5xl md:text-6xl font-heading font-extrabold text-accent mb-4 tracking-tight">
                   {euro.format(result.estimatedPrice)}
                 </div>
-                {result.fallback ? (
-                  <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm text-primary-foreground/80 ring-1 ring-white/10">
-                    <TrendingUp className="w-4 h-4 text-accent" />
-                    Prix moyen de secours : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
-                  </div>
-                ) : (
-                  <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm text-primary-foreground/80 ring-1 ring-white/10">
-                    <TrendingUp className="w-4 h-4 text-accent" />
-                    Prix moyen : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
-                    <span className="text-primary-foreground/40">•</span>
-                    sur {result.sampleSize} vente{result.sampleSize > 1 ? "s" : ""} récente{result.sampleSize > 1 ? "s" : ""}
-                  </div>
-                )}
-                {result.fallback && (
-                  <p className="mt-4 text-xs text-primary-foreground/60 italic">
-                    Estimation basée sur la moyenne communale ({result.fallbackCommune}) — mode dégradé, données indicatives.
-                  </p>
-                )}
+                <div className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-sm text-primary-foreground/80 ring-1 ring-white/10">
+                  <TrendingUp className="w-4 h-4 text-accent" />
+                  Prix moyen : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
+                  <span className="text-primary-foreground/40">•</span>
+                  sur {result.sampleSize} vente{result.sampleSize > 1 ? "s" : ""} récente{result.sampleSize > 1 ? "s" : ""}
+                </div>
               </CardContent>
             </Card>
 
-            {!result.fallback && (
-              <>
-                <h2 className="text-xl font-heading font-semibold mb-4 text-primary flex items-center gap-2">
-                  <span className="inline-block w-1.5 h-5 rounded-full bg-accent" />
-                  Ventes récentes à proximité
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {recentSales.map((sale, i) => {
+            <h2 className="text-xl font-heading font-semibold mb-4 text-primary flex items-center gap-2">
+              <span className="inline-block w-1.5 h-5 rounded-full bg-accent" />
+              Ventes récentes à proximité
+            </h2>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {recentSales.map((sale, i) => {
                 const isHouse = sale.type_local === "Maison";
                 const Icon = isHouse ? HomeIcon : Building2;
                 return (
@@ -302,20 +272,16 @@ export default function Estimation() {
                     </CardContent>
                   </Card>
                 );
-                  })}
-                </div>
-              </>
-            )}
+              })}
+            </div>
           </>
         )}
 
-        {!result?.fallback && (
-          <SaleDetailDialog
-            sale={selectedSale}
-            open={!!selectedSale}
-            onOpenChange={(o) => { if (!o) setSelectedSale(null); }}
-          />
-        )}
+        <SaleDetailDialog
+          sale={selectedSale}
+          open={!!selectedSale}
+          onOpenChange={(o) => { if (!o) setSelectedSale(null); }}
+        />
       </main>
     </div>
   );
