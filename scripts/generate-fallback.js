@@ -61,10 +61,12 @@ async function fetchCsvLines(url) {
 }
 
 /**
- * Parse une ligne CSV simple (sans guillemets échappés dans ce jeu de données).
+ * Parse une ligne CSV : gère les champs entourés de guillemets (fichiers 2022/2023)
+ * comme les champs nus (fichier 2024). Aucune valeur de ce jeu de données ne
+ * contient de virgule ou de guillemet échappé, un simple split + nettoyage suffit.
  */
 function parseLine(line) {
-  return line.split(",");
+  return line.split(",").map((f) => f.trim().replace(/^"(.*)"$/, "$1"));
 }
 
 async function main() {
