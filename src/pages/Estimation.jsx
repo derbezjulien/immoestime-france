@@ -188,11 +188,16 @@ export default function Estimation() {
     <div className="min-h-screen bg-background">
       <header className="hidden md:block border-b border-border/60 bg-card/70 backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-heading font-semibold text-primary">
+          <Link to="/" className="flex items-center gap-2.5">
             <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground">
               <HomeIcon className="w-4 h-4" />
             </span>
-            ImmoEstim
+            <span
+              className="font-serif text-lg font-semibold tracking-tight text-transparent bg-clip-text"
+              style={{ backgroundImage: "linear-gradient(135deg, #E6C158 0%, #D4AF37 50%, #B8941F 100%)" }}
+            >
+              L'Indice Immo
+            </span>
           </Link>
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" /> Estimation

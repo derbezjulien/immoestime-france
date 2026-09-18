@@ -4,7 +4,7 @@ import { ChevronLeft, Home as HomeIcon } from "lucide-react";
 
 const ROUTES = ["/", "/estimation", "/settings"];
 const TITLES = {
-  "/": "ImmoEstim",
+  "/": "L'Indice Immo",
   "/estimation": "Estimation",
   "/settings": "Paramètres",
 };
@@ -14,6 +14,7 @@ export default function MobileHeader() {
   const location = useLocation();
   if (!ROUTES.includes(location.pathname)) return null;
   const canBack = location.pathname !== "/";
+  const isHome = location.pathname === "/";
 
   return (
     <header
@@ -28,11 +29,20 @@ export default function MobileHeader() {
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <div className="flex items-center gap-2 font-heading font-semibold text-primary">
+        <div className="flex items-center gap-2">
           <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary text-primary-foreground">
             <HomeIcon className="w-4 h-4" />
           </span>
-          {TITLES[location.pathname]}
+          {isHome ? (
+            <span
+              className="font-serif text-base font-semibold tracking-tight text-transparent bg-clip-text"
+              style={{ backgroundImage: "linear-gradient(135deg, #E6C158 0%, #D4AF37 50%, #B8941F 100%)" }}
+            >
+              {TITLES[location.pathname]}
+            </span>
+          ) : (
+            <span className="font-heading font-semibold text-primary">{TITLES[location.pathname]}</span>
+          )}
         </div>
         <div className="w-10" />
       </div>
