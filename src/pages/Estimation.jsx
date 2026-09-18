@@ -21,10 +21,36 @@ function formatYear(dateIso) {
 }
 
 // === Paramètres ajustables du mode secours (estimation par moyenne communale) ===
-// Décote appliquée au prix au m² bâti d'une maison pour isoler la valeur de la construction.
-const MAISON_BATI_DISCOUNT = 0.15;
-// Valorisation du terrain à ajouter pour une maison (€ / m² de terrain).
-const TERRAIN_PRICE_PER_SQM = 50;
+// Décote de 20 % appliquée au prix moyen pour isoler la valeur de la construction d'une maison.
+const MAISON_BATI_DISCOUNT = 0.20;
+// Paliers de valorisation du terrain (en proportion du prix moyen au m² de la commune).
+const TERRAIN_TIERS = [
+  { limit: 500, rate: 0.05 },      // 0 à 500 m² : 5 % du prixMoyen / m²
+  { limit: 1500, rate: 0.02 },     // 501 à 1500 m² : 2 % du prixMoyen / m²
+  { limit: Infinity, rate: 0.005 }, // au-delà de 1500 m² : 0,5 % du prixMoyen / m²
+];
+
+/**
+ * Calcule la valeur du terrain d'une maison selon un système de paliers proportionnels
+ * et dégressifs, basé exclusivement sur le prix moyen au m² de la commune.
+ * @param {number} surfaceTerrain - Surface du terrain en m² (>= 0)
+ * @param {number} prixMoyen - Prix moyen au m² de la commune (€)
+ * @returns {number} Valeur du terrain en €
+ */
+function computeTerrainValue(surfaceTerrain, prixMoyen) {
+  let remaining = Math.max(0, surfaceTerrain);
+  let value = 0;
+  let previousLimit = 0;
+  for (const tier of TERRAIN_TIERS) {
+    if (remaining <= 0) break;
+    const tierWidth = tier.limit - previousLimit;
+    const tierSurface = Math.min(remaining, tierWidth);
+    value += tierSurface * (prixMoyen * tier.rate);
+    remaining -= tierSurface;
+    previousLimit = tier.limit;
+  }
+  return value;
+}
 
 export default function Estimation() {
   const { toast } = useToast();
@@ -126,11 +152,11 @@ export default function Estimation() {
             const surfaceBati = Number(surface);
             let estimatedPrice;
             if (propertyType === "Maison") {
-              // Décote sur le bâti pour isoler la valeur de la construction,
-              // puis ajout de la valorisation du terrain.
-              const batiValue = avgPerSqm * (1 - MAISON_BATI_DISCOUNT) * surfaceBati;
-              const terrainValue = (Number(terrainSurface) || 0) * TERRAIN_PRICE_PER_SQM;
-              estimatedPrice = batiValue + terrainValue;
+              // Décote de 20 % sur le bâti pour isoler la valeur de la construction.
+              const valeurBati = surfaceBati * (avgPerSqm * (1 - MAISON_BATI_DISCOUNT));
+              // Valorisation du terrain par paliers proportionnels dégressifs.
+              const valeurTerrain = computeTerrainValue(Number(terrainSurface) || 0, avgPerSqm);
+              estimatedPrice = valeurBati + valeurTerrain;
             } else {
               // Appartement : prix au m² du dictionnaire appliqué directement à la surface habitable.
               estimatedPrice = avgPerSqm * surfaceBati;
