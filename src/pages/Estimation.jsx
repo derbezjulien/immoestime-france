@@ -327,7 +327,7 @@ export default function Estimation() {
                       Prix moyen de référence : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
                     </div>
                     <p className="mt-4 text-xs text-primary-foreground/70 italic">
-                      Estimation basée sur la moyenne communale ({result.fallbackCommune}) — mode dégradé, données indicatives.
+                      Réseau notarial momentanément indisponible. Estimation sécurisée via les indices officiels INSEE des 3 dernières années pour la commune de {result.fallbackCommune}.
                     </p>
                   </>
                 ) : (
