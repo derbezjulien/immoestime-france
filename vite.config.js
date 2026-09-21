@@ -37,8 +37,10 @@ export default defineConfig({
     })
   ],
   build: {
-    // Cible du bundle moderne : ES2018 reste compatible avec les navigateurs récents
-    // tout en permettant à esbuild d'abaisser la syntaxe (optional chaining, nullish…).
-    target: ['es2018', 'safari11.1', 'chrome60', 'firefox60']
+    // Cible du bundle moderne : ES2017 (async/await) reste compatible avec les
+    // navigateurs récents ET avec les plus anciens qui supportent <script type="module">
+    // (Safari 10.1, Firefox 60, Chrome 56). ES2018 (object spread) serait cassant pour
+    // Safari 10.1. La syntaxe plus récente est abaisée par esbuild.
+    target: ['es2017', 'safari10.1', 'chrome56', 'firefox60']
   }
 });
