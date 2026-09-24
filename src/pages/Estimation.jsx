@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Home as HomeIcon, MapPin, Calculator, Loader2, AlertCircle, Building2, Sparkles, TrendingUp, Trees, WifiOff } from "lucide-react";
+import { Home as HomeIcon, MapPin, Calculator, Loader2, AlertCircle, Building2, Sparkles, TrendingUp, Trees } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
@@ -66,7 +66,6 @@ export default function Estimation() {
   const [recentSales, setRecentSales] = useState([]);
   const [selectedSale, setSelectedSale] = useState(null);
   const [debounceTimer, setDebounceTimer] = useState(null);
-  const [networkDiagnostic, setNetworkDiagnostic] = useState(null);
 
   const onQueryChange = (value) => {
     setQuery(value);
@@ -100,7 +99,6 @@ export default function Estimation() {
     setError(null);
     setResult(null);
     setRecentSales([]);
-    setNetworkDiagnostic(null);
     try {
       const citycode = selected.properties.citycode;
       const commune = selected.properties.city || selected.properties.name || "";
@@ -140,9 +138,10 @@ export default function Estimation() {
       );
     } catch (e) {
       const msg = (e && e.message) || "";
-      // Diagnostic réseau exact (type, statut, durée) pour affichage dans l'UI.
+      // Diagnostic réseau silencieux (console développeur uniquement, invisible côté UI).
       const diagData = e?.data?.diagnostic || e?.diagnostic;
-      setNetworkDiagnostic(
+      console.warn(
+        "[Cerema] API principale injoignable",
         diagData
           ? `DVF_UNAVAILABLE [${diagData.type}] ${diagData.detail || ""} (statut ${diagData.status}, ${diagData.attempts ?? "?"} tentatives, ${diagData.durationMs ?? "?"}ms)`
           : msg
@@ -343,16 +342,6 @@ export default function Estimation() {
           </div>
         )}
 
-        {networkDiagnostic && !error && (
-          <div className="flex items-start gap-2.5 p-3.5 mb-6 rounded-xl border border-amber-300/50 bg-amber-50 text-amber-900 text-xs dark:bg-amber-950/30 dark:text-amber-200 dark:border-amber-700/40">
-            <WifiOff className="w-4 h-4 mt-0.5 shrink-0" />
-            <div className="min-w-0">
-              <div className="font-semibold mb-0.5">Connexion Cerema — API principale injoignable</div>
-              <div className="font-mono break-all opacity-90">{networkDiagnostic}</div>
-              <div className="mt-1 opacity-70">Le mode secours a pris le relais automatiquement.</div>
-            </div>
-          </div>
-        )}
 
         {result && (
           <>
