@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import SaleDetailDialog from "@/components/SaleDetailDialog";
+import AdBanner from "@/components/AdBanner";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -419,6 +420,8 @@ export default function Estimation() {
             )}
           </>
         )}
+
+        <AdBanner />
 
         <SaleDetailDialog
           sale={selectedSale}
