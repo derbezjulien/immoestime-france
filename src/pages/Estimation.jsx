@@ -148,7 +148,12 @@ export default function Estimation() {
           : msg
       );
       const isServerDown =
-        msg.includes("DVF_TIMEOUT") || msg.includes("DVF_UNAVAILABLE") || msg.includes("504") || msg.includes("502");
+        msg.includes("DVF_TIMEOUT") ||
+        msg.includes("DVF_UNAVAILABLE") ||
+        msg.includes("502") ||
+        msg.includes("503") ||
+        msg.includes("504") ||
+        /status code 5\d\d/.test(msg);
 
       if (isServerDown) {
         // Mode dégradé : l'API est en panne et aucune donnée n'était en cache.
