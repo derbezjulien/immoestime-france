@@ -38,15 +38,7 @@ const TERRAIN_TIERS = [
  * @param {number} prixMoyen - Prix moyen au m² de la commune (€)
  * @returns {number} Valeur du terrain en €
  */
-// Coefficient de tension du marché : module la valorisation du terrain selon
-// la rareté de l'espace, estimée via le prix moyen au m² de la commune.
-function computeTensionCoefficient(prixMoyen) {
-  if (prixMoyen >= 3500) return 1.2;
-  if (prixMoyen >= 2000) return 1.0;
-  return 0.6;
-}
-
-function computeTerrainValue(surfaceTerrain, prixMoyen, coefficientTension) {
+function computeTerrainValue(surfaceTerrain, prixMoyen) {
   let remaining = Math.max(0, surfaceTerrain);
   let value = 0;
   let previousLimit = 0;
@@ -54,7 +46,7 @@ function computeTerrainValue(surfaceTerrain, prixMoyen, coefficientTension) {
     if (remaining <= 0) break;
     const tierWidth = tier.limit - previousLimit;
     const tierSurface = Math.min(remaining, tierWidth);
-    value += tierSurface * (prixMoyen * (tier.rate * coefficientTension));
+    value += tierSurface * (prixMoyen * tier.rate);
     remaining -= tierSurface;
     previousLimit = tier.limit;
   }
@@ -176,10 +168,8 @@ export default function Estimation() {
             if (propertyType === "Maison") {
               // Décote de 20 % sur le bâti pour isoler la valeur de la construction.
               const valeurBati = surfaceBati * (avgPerSqm * (1 - MAISON_BATI_DISCOUNT));
-              // Coefficient de tension du marché (rareté de l'espace) selon le prix moyen.
-              const coefficientTension = computeTensionCoefficient(avgPerSqm);
-              // Valorisation du terrain par paliers proportionnels dégressifs, modulée par la tension.
-              const valeurTerrain = computeTerrainValue(Number(terrainSurface) || 0, avgPerSqm, coefficientTension);
+              // Valorisation du terrain par paliers proportionnels dégressifs.
+              const valeurTerrain = computeTerrainValue(Number(terrainSurface) || 0, avgPerSqm);
               estimatedPrice = valeurBati + valeurTerrain;
             } else {
               // Appartement : prix au m² du dictionnaire appliqué directement à la surface habitable.
