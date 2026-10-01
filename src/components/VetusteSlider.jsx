@@ -1,29 +1,26 @@
 import React from "react";
-import { Hammer, Paintbrush, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Image } from "@/components/ui/image";
 
 // Cartes de repère (milestones) affichées au-dessus du curseur.
 const MILESTONES = [
   {
     value: 0,
-    Icon: Hammer,
+    img: "https://media.base44.com/images/public/6a84215708d7de5f6c35e173/60197d7ad_generated_image.png",
     title: "0 | À rénover",
     subtitle: "Gros œuvre (Toiture, Élec)",
-    iconClass: "text-primary",
   },
   {
     value: 5,
-    Icon: Paintbrush,
+    img: "https://media.base44.com/images/public/6a84215708d7de5f6c35e173/149970454_generated_image.png",
     title: "5 | Rafraîchissements",
     subtitle: "Peinture, Sols, Cuisine",
-    iconClass: "text-primary",
   },
   {
     value: 10,
-    Icon: Sparkles,
+    img: "https://media.base44.com/images/public/6a84215708d7de5f6c35e173/814f6d407_generated_image.png",
     title: "10 | État neuf",
     subtitle: "Récent, Garantie décennale",
-    iconClass: "text-accent",
   },
 ];
 
@@ -87,7 +84,12 @@ export default function VetusteSlider({ value, onChange, disabled }) {
                   : "opacity-60 border-border/60"
               )}
             >
-              <m.Icon className={cn("w-5 h-5 mx-auto mb-1", m.iconClass)} />
+              <Image
+                src={m.img}
+                alt={m.title}
+                fittingType="fit"
+                className="w-14 h-14 mx-auto mb-1"
+              />
               <div className="text-[11px] font-semibold text-primary leading-tight">{m.title}</div>
               <div className="text-[10px] text-muted-foreground leading-tight mt-0.5">{m.subtitle}</div>
             </div>
