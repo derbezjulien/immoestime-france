@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import SaleDetailDialog from "@/components/SaleDetailDialog";
 import AdBanner from "@/components/AdBanner";
-import { Slider } from "@/components/ui/slider";
+import VetusteSlider from "@/components/VetusteSlider";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -343,26 +343,8 @@ export default function Estimation() {
 
             {/* Indice de vétusté */}
             <div>
-              <div className="flex items-baseline justify-between">
-                <Label className="text-primary font-medium">Indice de vétusté</Label>
-                <span className="text-sm font-semibold text-accent tabular-nums">{vetuste} / 10</span>
-              </div>
-              <div className="mt-3 px-1">
-                <Slider
-                  value={[vetuste]}
-                  min={0}
-                  max={10}
-                  step={1}
-                  onValueChange={(v) => setVetuste(v[0])}
-                  disabled={!selected}
-                  className="py-1"
-                />
-                <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
-                  <span className="text-left" style={{ width: "33%" }}>0 — À rénover entièrement</span>
-                  <span className="text-center" style={{ width: "34%" }}>5 — Rafraîchissements</span>
-                  <span className="text-right" style={{ width: "33%" }}>10 — État neuf (- 2 ans)</span>
-                </div>
-              </div>
+              <Label className="text-primary font-medium mb-3 block">Indice de vétusté</Label>
+              <VetusteSlider value={vetuste} onChange={setVetuste} disabled={!selected} />
             </div>
 
             <Button
