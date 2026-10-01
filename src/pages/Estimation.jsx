@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import SaleDetailDialog from "@/components/SaleDetailDialog";
 import AdBanner from "@/components/AdBanner";
+import { Slider } from "@/components/ui/slider";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -38,6 +39,17 @@ const TERRAIN_TIERS = [
  * @param {number} prixMoyen - Prix moyen au m² de la commune (€)
  * @returns {number} Valeur du terrain en €
  */
+// Indice de vétusté (0 à 10) → coefficient multiplicateur appliqué au bâti uniquement.
+// Le terrain ne subit pas de vétusté, il n'est jamais affecté par ce coefficient.
+function vetusteCoefficient(note) {
+  if (note >= 10) return 1.15;
+  if (note >= 8) return 1.08;
+  if (note >= 6) return 1.00;
+  if (note >= 4) return 0.85;
+  if (note >= 2) return 0.70;
+  return 0.50;
+}
+
 function computeTerrainValue(surfaceTerrain, prixMoyen) {
   let remaining = Math.max(0, surfaceTerrain);
   let value = 0;
@@ -61,6 +73,7 @@ export default function Estimation() {
   const [surface, setSurface] = useState("");
   const [propertyType, setPropertyType] = useState("Appartement");
   const [terrainSurface, setTerrainSurface] = useState("");
+  const [vetuste, setVetuste] = useState(7);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
@@ -129,7 +142,9 @@ export default function Estimation() {
       const avgPerSqm =
         sales.reduce((acc, s) => acc + s.valeur_fonciere / s.surface_reelle_bati, 0) /
         sales.length;
-      const estimatedPrice = avgPerSqm * Number(surface);
+      // API principale : pondération globale par le coefficient de vétusté.
+      const coefVetuste = vetusteCoefficient(Number(vetuste));
+      const estimatedPrice = avgPerSqm * Number(surface) * coefVetuste;
 
       setResult({ estimatedPrice, averagePricePerSqm: avgPerSqm, sampleSize: sales.length });
       setRecentSales(
@@ -164,16 +179,18 @@ export default function Estimation() {
           const avgPerSqm = fallbackModule.default?.[citycode] ?? fallbackModule[citycode];
           if (avgPerSqm && avgPerSqm > 0) {
             const surfaceBati = Number(surface);
+            // Mode secours : la vétusté ne s'applique qu'au bâti, jamais au terrain.
+            const coefVetuste = vetusteCoefficient(Number(vetuste));
             let estimatedPrice;
             if (propertyType === "Maison") {
               // Décote de 20 % sur le bâti pour isoler la valeur de la construction.
-              const valeurBati = surfaceBati * (avgPerSqm * (1 - MAISON_BATI_DISCOUNT));
-              // Valorisation du terrain par paliers proportionnels dégressifs.
+              const valeurBati = surfaceBati * (avgPerSqm * (1 - MAISON_BATI_DISCOUNT)) * coefVetuste;
+              // Valorisation du terrain par paliers proportionnels dégressifs (sans vétusté).
               const valeurTerrain = computeTerrainValue(Number(terrainSurface) || 0, avgPerSqm);
               estimatedPrice = valeurBati + valeurTerrain;
             } else {
-              // Appartement : prix au m² du dictionnaire appliqué directement à la surface habitable.
-              estimatedPrice = avgPerSqm * surfaceBati;
+              // Appartement : prix au m² du dictionnaire appliqué à la surface, pondéré par la vétusté.
+              estimatedPrice = avgPerSqm * surfaceBati * coefVetuste;
             }
             setResult({
               estimatedPrice,
@@ -196,7 +213,7 @@ export default function Estimation() {
     } finally {
       setLoading(false);
     }
-  }, [selected, surface, propertyType, terrainSurface]);
+  }, [selected, surface, propertyType, terrainSurface, vetuste]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -321,6 +338,30 @@ export default function Estimation() {
                   className="pl-10"
                   disabled={!selected}
                 />
+              </div>
+            </div>
+
+            {/* Indice de vétusté */}
+            <div>
+              <div className="flex items-baseline justify-between">
+                <Label className="text-primary font-medium">Indice de vétusté</Label>
+                <span className="text-sm font-semibold text-accent tabular-nums">{vetuste} / 10</span>
+              </div>
+              <div className="mt-3 px-1">
+                <Slider
+                  value={[vetuste]}
+                  min={0}
+                  max={10}
+                  step={1}
+                  onValueChange={(v) => setVetuste(v[0])}
+                  disabled={!selected}
+                  className="py-1"
+                />
+                <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
+                  <span className="text-left" style={{ width: "33%" }}>0 — À rénover entièrement</span>
+                  <span className="text-center" style={{ width: "34%" }}>5 — Rafraîchissements</span>
+                  <span className="text-right" style={{ width: "33%" }}>10 — État neuf (- 2 ans)</span>
+                </div>
               </div>
             </div>
 
