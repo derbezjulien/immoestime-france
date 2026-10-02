@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import SaleDetailDialog from "@/components/SaleDetailDialog";
 import AdBanner from "@/components/AdBanner";
 import VetusteSlider from "@/components/VetusteSlider";
+import DownloadAttestationButton from "@/components/DownloadAttestationButton";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -406,6 +407,21 @@ export default function Estimation() {
                 )}
               </CardContent>
             </Card>
+
+            <div className="mb-8">
+              <DownloadAttestationButton
+                data={{
+                  address: selected?.properties?.label,
+                  propertyType,
+                  surface,
+                  terrainSurface,
+                  vetuste,
+                  estimatedPrice: result.estimatedPrice,
+                  fallback: result.fallback,
+                  fallbackCommune: result.fallbackCommune,
+                }}
+              />
+            </div>
 
             {!result.fallback && (
               <>
