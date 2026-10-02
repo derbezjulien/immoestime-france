@@ -350,7 +350,7 @@ export default function Estimation() {
             <Button
               onClick={estimate}
               disabled={!selected || !surface || Number(surface) <= 0 || loading}
-              className="w-full h-12 text-base shadow-soft"
+              className="w-full h-12 text-base shadow-soft bg-yellow-500 text-gray-900 hover:bg-yellow-400 font-bold"
             >
               {loading ? (
                 <>
