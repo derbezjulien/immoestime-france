@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
  *
  * Activation future : passer les props `adClient` ("ca-pub-XXXX") et `slot`.
  */
-export default function AdBanner({ adClient = "ca-pub-2634463474515021", slot, className }) {
+export default function AdBanner({ adClient = "ca-pub-2634463474515021", slot = "1580332016", className }) {
   const insRef = useRef(null);
   const isLive = Boolean(adClient && slot);
 
