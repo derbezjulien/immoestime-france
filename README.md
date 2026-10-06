@@ -1,77 +1,37 @@
-# Base44 Project
+# L'Indice Immo
 
-Use this repository to run and edit the app locally, then publish changes back through Base44.
+Application d'estimation immobilière indicative, fondée sur les ventes réelles enregistrées dans les communes françaises.
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+## But de l'application
 
-## Prerequisites
+L'Indice Immo permet d'estimer la valeur d'un bien immobilier à partir de son adresse et de sa surface. L'estimation s'appuie sur les ventes réelles récentes de la commune, issues des données ouvertes de l'État.
 
-1. Clone the repository using the project's Git URL.
-2. Navigate to the project directory.
-3. Install dependencies: `npm install`.
-4. Install the Base44 CLI: `npm install -g base44@latest`.
+## Sources de données
 
-See the [Base44 CLI docs](https://docs.base44.com/developers/references/cli/get-started/overview) if you want to run Base44 commands directly.
+- **Base Adresse Nationale (BAN)** — recherche et validation des adresses (adresse.data.gouv.fr).
+- **Demandes de Valeurs Foncières (DVF)** — ventes enregistrées, issues des fichiers géolocalisés geo-dvf publiés sur data.gouv.fr (Etalab / Cerema).
 
-## Run Locally
+## Mode secours
 
-Run the full local development environment from the project root:
+Lorsque le serveur des données foncières est momentanément indisponible, l'application bascule en mode secours : l'estimation est alors calculée à partir d'un dictionnaire statique de prix moyens au m² par commune. Ce mode est moins précis qu'une estimation fondée sur les ventes récentes.
+
+## Lancement local
 
 ```bash
+# Environnement complet (backend + frontend)
 base44 dev
-```
 
-`base44 dev` starts the local Base44 development backend and, when this app is configured for it, also starts the frontend dev server for you. Use the frontend URL printed by the command.
-
-For example, when the Base44 project config includes a `serveCommand`, `base44 dev` can launch the frontend too:
-
-```json5
-{
-  "site": {
-    "serveCommand": "npm run dev"
-  }
-}
-```
-
-In a Base44 project this lives in `base44/config.jsonc`.
-
-## Run Only The Frontend
-
-If you only want to work on the frontend against the hosted Base44 backend, run:
-
-```bash
+# Frontend uniquement, connecté au backend hébergé
 npm run dev
 ```
 
-Open the local URL printed by Vite.
+Pour le frontend seul, créez un fichier `.env.local` avec :
 
-## Use The Hosted Backend
-
-For frontend-only development, create or update `.env.local` in the project root:
-
-```bash
+```
 VITE_BASE44_APP_ID=your_app_id
 VITE_BASE44_APP_BASE_URL=https://your-app.base44.app
 ```
 
-`VITE_BASE44_APP_ID` identifies the Base44 app.
+## Avertissement
 
-`VITE_BASE44_APP_BASE_URL` tells the Base44 Vite plugin where to send local `/api` requests. Point it at your deployed Base44 app URL when you want the local frontend to use the hosted backend.
-
-When you use `base44 dev`, the command injects the local Base44 values for you, so `.env.local` is mainly needed for frontend-only workflows.
-
-## Publish Your Changes
-
-After pushing your changes to git, open the Base44 dashboard and publish the app:
-
-```bash
-base44 dashboard open
-```
-
-## Docs & Support
-
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
-
-Base44 CLI command reference: [https://docs.base44.com/developers/references/cli/commands/introduction](https://docs.base44.com/developers/references/cli/commands/introduction)
-
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+Les estimations fournies sont **indicatives**. Elles ne constituent pas une expertise et ne remplacent pas l'avis d'un professionnel de l'immobilier.

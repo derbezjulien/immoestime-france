@@ -25,7 +25,7 @@ export default function DownloadAttestationButton({ data }) {
       // Ajuste à la page A4 (le template est aux proportions A4).
       const renderH = Math.min(imgH, pageH);
       pdf.addImage(imgData, "JPEG", 0, 0, pageW, renderH);
-      pdf.save("attestation-estimation-immo.pdf");
+      pdf.save("estimation-immo.pdf");
     } finally {
       setGenerating(false);
     }
@@ -40,7 +40,7 @@ export default function DownloadAttestationButton({ data }) {
         className="w-full flex items-center justify-center gap-2 h-11 rounded-xl border border-yellow-500/60 bg-transparent text-yellow-500 text-sm font-semibold hover:bg-yellow-500/10 transition-colors disabled:opacity-60"
       >
         {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-        {generating ? "Génération…" : "Télécharger mon attestation (PDF)"}
+        {generating ? "Génération…" : "Télécharger mon estimation (PDF)"}
       </button>
 
       {/* Modèle A4 hors écran, utilisé uniquement par html2canvas */}

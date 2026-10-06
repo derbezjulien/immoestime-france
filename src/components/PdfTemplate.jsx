@@ -24,7 +24,7 @@ export default function PdfTemplate({ data }) {
           <span className="text-3xl font-bold tracking-tight">L'Indice Immo</span>
         </div>
         <div className="text-right">
-          <div className="text-sm font-semibold text-yellow-500">Attestation de valeur indicative</div>
+          <div className="text-sm font-semibold text-yellow-500">Estimation indicative</div>
           <div className="text-xs text-gray-300 mt-1">Éditée le {today}</div>
         </div>
       </div>
@@ -53,8 +53,8 @@ export default function PdfTemplate({ data }) {
         <div className="text-5xl text-yellow-500 font-bold">{fmtEuro(data.estimatedPrice)}</div>
         <div className="text-xs text-gray-300 mt-4">
           {data.fallback
-            ? `Estimation sécurisée via les indices officiels INSEE — commune de ${data.fallbackCommune || ""}`
-            : "Basée sur les ventes réelles enregistrées à proximité (DVF)"}
+            ? `Estimation indicative basée sur le prix moyen communal (DVF, data.gouv.fr) — commune de ${data.fallbackCommune || ""}`
+            : "Basée sur les ventes réelles enregistrées dans la commune (DVF)"}
         </div>
       </div>
 
@@ -69,7 +69,7 @@ export default function PdfTemplate({ data }) {
       {/* === Mentions légales === */}
       <div className="mt-auto pt-6 border-t border-gray-100">
         <p className="text-xs text-gray-400 leading-relaxed">
-          Sources des données : Demandes de Valeurs Foncières (DVF) — data.gouv.fr / Cerema. Cette attestation présente une valeur indicative fondée sur des ventes réelles et ne constitue pas une expertise notariale.
+          Sources des données : Demandes de Valeurs Foncières (DVF) — data.gouv.fr / Cerema. Cette estimation présente une valeur indicative fondée sur des ventes réelles et ne constitue pas une expertise notariale.
         </p>
       </div>
     </div>

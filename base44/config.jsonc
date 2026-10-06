@@ -1,5 +1,5 @@
 {
-  "name": "untitled",
+  "name": "L'Indice Immo",
   "site": {
     "installCommand": "npm install",
     "buildCommand": "npm run build",

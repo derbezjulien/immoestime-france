@@ -18,6 +18,8 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
+import MentionsLegales from '@/pages/MentionsLegales';
+import Confidentialite from '@/pages/Confidentialite';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -48,6 +50,8 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/estimation" element={<Estimation />} />
+      <Route path="/mentions-legales" element={<MentionsLegales />} />
+      <Route path="/confidentialite" element={<Confidentialite />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -27,8 +27,7 @@ export default function Home() {
             Estimez votre bien immobilier
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-9">
-            Une estimation fiable et impartiale basée sur les ventes réelles
-            récentes autour de chez vous, issues des données officielles de l'État français.
+            Une estimation indicative basée sur les ventes réelles récentes de votre commune, issues des données ouvertes de l'État (DVF).
           </p>
           <Button asChild size="lg" className="shadow-soft">
             <Link to="/estimation">Commencer une estimation</Link>
@@ -43,9 +42,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3 ring-1 ring-accent/20">
               <MapPin className="w-6 h-6 text-accent" />
             </div>
-            <CardTitle className="text-primary text-lg">Localisation Certifiée</CardTitle>
+            <CardTitle className="text-primary text-lg">Recherche d'adresse</CardTitle>
             <CardDescription>
-              Saisissez simplement l'adresse de votre propriété. Notre système la valide instantanément en s'appuyant sur les registres officiels de l'État pour garantir une précision absolue.
+              Saisissez l'adresse de votre bien ; elle est recherchée dans la Base Adresse Nationale.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -54,9 +53,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3 ring-1 ring-accent/20">
               <Calculator className="w-6 h-6 text-accent" />
             </div>
-            <CardTitle className="text-primary text-lg">Évaluation Sur-Mesure</CardTitle>
+            <CardTitle className="text-primary text-lg">Estimation personnalisée</CardTitle>
             <CardDescription>
-              Renseignez la surface habitable de votre bien. Obtenez en un clic une valorisation immédiate, personnalisée et strictement confidentielle de votre patrimoine.
+              Renseignez la surface de votre bien pour obtenir une valeur indicative.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -65,9 +64,9 @@ export default function Home() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 mb-3 ring-1 ring-accent/20">
               <TrendingUp className="w-6 h-6 text-accent" />
             </div>
-            <CardTitle className="text-primary text-lg">Historique Notarié</CardTitle>
+            <CardTitle className="text-primary text-lg">Ventes réelles récentes</CardTitle>
             <CardDescription>
-              Votre prix de référence est calculé exclusivement à partir des véritables actes de vente enregistrés par les notaires dans votre quartier au cours des trois dernières années.
+              Votre prix de référence est calculé à partir des ventes enregistrées dans votre commune au cours des trois dernières années (Demandes de Valeurs Foncières).
             </CardDescription>
           </CardHeader>
         </Card>
@@ -75,8 +74,13 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-border/60">
-        <div className="max-w-5xl mx-auto px-6 py-8 text-center text-sm text-muted-foreground">
-          Données : Base Adresse Nationale & Demande de Valeurs Foncières (DVF) — data.gouv.fr
+        <div className="max-w-5xl mx-auto px-6 py-8 text-center text-sm text-muted-foreground space-y-3">
+          <div>Données : Base Adresse Nationale & Demande de Valeurs Foncières (DVF) — data.gouv.fr</div>
+          <div className="text-xs">
+            <Link to="/mentions-legales" className="hover:text-accent hover:underline">Mentions légales</Link>
+            <span className="mx-2">·</span>
+            <Link to="/confidentialite" className="hover:text-accent hover:underline">Confidentialité</Link>
+          </div>
         </div>
       </footer>
     </div>

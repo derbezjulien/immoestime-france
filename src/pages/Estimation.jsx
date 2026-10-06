@@ -135,7 +135,7 @@ export default function Estimation() {
         });
 
       if (sales.length === 0) {
-        setError(`Aucune vente récente de type ${propertyType.toLowerCase()} trouvée à proximité de cette adresse.`);
+        setError(`Aucune vente récente de type ${propertyType.toLowerCase()} trouvée dans cette commune.`);
         setLoading(false);
         return;
       }
@@ -240,7 +240,7 @@ export default function Estimation() {
             Estimation immobilière
           </h1>
           <p className="text-muted-foreground">
-            Saisissez votre adresse et la surface pour obtenir une estimation basée sur les ventes réelles à proximité.
+            Saisissez votre adresse et la surface pour obtenir une estimation basée sur les ventes réelles de la commune.
           </p>
         </div>
 
@@ -362,6 +362,9 @@ export default function Estimation() {
                 "Estimer"
               )}
             </Button>
+            <p className="text-xs text-muted-foreground text-center mt-3">
+              Estimation indicative, ne remplace pas l'avis d'un professionnel.
+            </p>
           </CardContent>
         </Card>
 
@@ -394,7 +397,7 @@ export default function Estimation() {
                       Prix moyen de référence : <span className="font-semibold text-primary-foreground">{euro.format(result.averagePricePerSqm)}/m²</span>
                     </div>
                     <p className="mt-4 text-xs text-primary-foreground/70 italic">
-                      Réseau notarial momentanément indisponible. Estimation sécurisée via les indices officiels INSEE des 3 dernières années pour la commune de {result.fallbackCommune}.
+                      Le serveur des données foncières est momentanément indisponible. Estimation indicative basée sur le prix moyen au m² de la commune de {result.fallbackCommune}, issu des Demandes de Valeurs Foncières (DVF, data.gouv.fr). Moins précise qu'une estimation fondée sur les ventes récentes.
                     </p>
                   </>
                 ) : (
@@ -427,7 +430,7 @@ export default function Estimation() {
               <>
                 <h2 className="text-xl font-heading font-semibold mb-4 text-primary flex items-center gap-2">
                   <span className="inline-block w-1.5 h-5 rounded-full bg-accent" />
-                  Ventes récentes à proximité
+                  Ventes récentes dans la commune
                 </h2>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {recentSales.map((sale, i) => {
@@ -466,6 +469,12 @@ export default function Estimation() {
         )}
 
         <AdBanner />
+
+        <footer className="mt-10 pt-6 border-t border-border/60 text-center text-xs text-muted-foreground">
+          <Link to="/mentions-legales" className="hover:text-accent hover:underline">Mentions légales</Link>
+          <span className="mx-2">·</span>
+          <Link to="/confidentialite" className="hover:text-accent hover:underline">Confidentialité</Link>
+        </footer>
 
         <SaleDetailDialog
           sale={selectedSale}
