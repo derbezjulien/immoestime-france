@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import useSeo from "@/hooks/use-seo";
 
 function Section({ title, children }) {
   return (
@@ -13,6 +14,7 @@ function Section({ title, children }) {
 }
 
 export default function MentionsLegales() {
+  useSeo({ title: "Mentions légales | L'Indice Immo", description: "Mentions légales de L'Indice Immo, application d'estimation immobilière indicative.", path: "/mentions-legales" });
   return (
     <div className="min-h-screen bg-background">
       <main className="max-w-3xl mx-auto px-6 py-10">

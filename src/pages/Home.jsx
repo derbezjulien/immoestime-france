@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { Home as HomeIcon, MapPin, Calculator, TrendingUp, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import useSeo from "@/hooks/use-seo";
 
 export default function Home() {
+  useSeo({ title: "Estimation immobilière gratuite en ligne | L'Indice Immo", description: "Estimez gratuitement votre maison ou appartement à partir des ventes réelles de votre commune (DVF, données de l'État). Estimation indicative.", path: "/" });
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}

@@ -6,8 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Lock, Loader2, AlertTriangle } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
+import useSeo from "@/hooks/use-seo";
 
 export default function ResetPassword() {
+  useSeo({ title: "Nouveau mot de passe | L'Indice Immo", path: "/reset-password", noindex: true });
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("token");
 

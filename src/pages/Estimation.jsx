@@ -12,6 +12,7 @@ import SaleDetailDialog from "@/components/SaleDetailDialog";
 import AdBanner from "@/components/AdBanner";
 import VetusteSlider from "@/components/VetusteSlider";
 import DownloadAttestationButton from "@/components/DownloadAttestationButton";
+import useSeo from "@/hooks/use-seo";
 
 const euro = new Intl.NumberFormat("fr-FR", {
   style: "currency",
@@ -67,6 +68,7 @@ function computeTerrainValue(surfaceTerrain, prixMoyen) {
 }
 
 export default function Estimation() {
+  useSeo({ title: "Estimer mon bien gratuitement : prix au m² | L'Indice Immo", description: "Indiquez adresse, surface et état de votre bien : obtenez gratuitement une valeur indicative d'après les ventes récentes de votre commune (DVF).", path: "/estimation" });
   const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
