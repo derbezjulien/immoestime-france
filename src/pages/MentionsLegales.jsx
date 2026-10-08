@@ -26,32 +26,33 @@ export default function MentionsLegales() {
             <CardTitle className="text-2xl">Mentions légales</CardTitle>
           </CardHeader>
           <CardContent>
-            <Section title="Éditeur de la publication">
-              <p>Le présent site est édité par : [À COMPLÉTER — nom de l'éditeur]</p>
-              <p>Adresse : [À COMPLÉTER]</p>
-              <p>E-mail : [À COMPLÉTER]</p>
-              <p>Forme juridique : [À COMPLÉTER]</p>
-              <p>Capital social : [À COMPLÉTER]</p>
-              <p>Numéro SIRET : [À COMPLÉTER]</p>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+              En vertu de l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, il est précisé aux utilisateurs du site internet L'Indice Immo (www.indiceimmo.org) l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi :
+            </p>
+            <Section title="1. Éditeur du site">
+              <p>Le site L'Indice Immo est édité par :</p>
+              <p>Nom / Prénom : Julien Derbez</p>
+              <p>Statut : Particulier</p>
+              <p>Adresse de domiciliation : 33410 Cadillac</p>
+              <p>Email de contact : derbez.julien@indiceimmo.org</p>
             </Section>
-            <Section title="Directeur de la publication">
-              <p>[À COMPLÉTER — nom du directeur de la publication]</p>
+            <Section title="2. Directeur de la publication">
+              <p>Le Directeur de la publication est : Julien Derbez</p>
             </Section>
-            <Section title="Hébergeur">
-              <p>Le site est hébergé par : [À COMPLÉTER — nom de l'hébergeur]</p>
-              <p>Adresse : [À COMPLÉTER]</p>
-              <p>Contact : [À COMPLÉTER]</p>
+            <Section title="3. Hébergement">
+              <p>Le site est hébergé par :</p>
+              <p>IONOS SARL</p>
+              <p>7, place de la Gare</p>
+              <p>BP 70109</p>
+              <p>57200 Sarreguemines Cedex</p>
+              <p>France</p>
+              <p>Site Web : <a href="https://www.ionos.fr" className="text-accent hover:underline" target="_blank" rel="noreferrer">https://www.ionos.fr</a></p>
             </Section>
-            <Section title="Propriété intellectuelle">
-              <p>Les éléments de ce site (textes, logos, charte graphique) sont la propriété de leur auteur. Toute reproduction, même partielle, est soumise à autorisation préalable.</p>
+            <Section title="4. Propriété intellectuelle">
+              <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Le design, le code source, le logo "L'Indice Immo" et l'algorithme d'estimation sont la propriété exclusive de l'éditeur. Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable.</p>
             </Section>
-            <Section title="Sources des données">
-              <p>Les estimations reposent sur des données publiques :</p>
-              <p>• Base Adresse Nationale (BAN) — adresse.data.gouv.fr</p>
-              <p>• Demandes de Valeurs Foncières (DVF) — data.gouv.fr / Cerema</p>
-            </Section>
-            <Section title="Limitation de responsabilité">
-              <p>Les estimations fournies par ce site sont indicatives et fondées sur des ventes réelles enregistrées dans la commune. Elles ne constituent pas une expertise et ne remplacent pas l'avis d'un professionnel de l'immobilier.</p>
+            <Section title="5. Avertissement sur les estimations">
+              <p>Les estimations fournies par l'outil L'Indice Immo sont données à titre purement indicatif. Elles sont issues d'un algorithme croisant les données publiques de l'État (DVF - Demandes de Valeurs Foncières) et des indices mathématiques de vétusté. Ces résultats ne constituent en aucun cas une expertise immobilière officielle ou notariale et ne sauraient engager la responsabilité de l'éditeur en cas de transaction immobilière.</p>
             </Section>
           </CardContent>
         </Card>
