@@ -12,7 +12,6 @@ import SaleDetailDialog from "@/components/SaleDetailDialog";
 import AdBanner from "@/components/AdBanner";
 import VetusteSlider from "@/components/VetusteSlider";
 import DownloadAttestationButton from "@/components/DownloadAttestationButton";
-import Logo from "@/components/Logo";
 import useSeo from "@/hooks/use-seo";
 
 const euro = new Intl.NumberFormat("fr-FR", {
@@ -223,8 +222,13 @@ export default function Estimation() {
     <div className="min-h-screen bg-background">
       <header className="hidden md:block border-b border-border/60 bg-card/70 backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <Logo height={40} />
+          <Link to="/" className="flex items-center gap-3">
+            <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary dark:bg-card text-accent ring-1 ring-accent/30">
+              <HomeIcon className="w-8 h-8" />
+            </span>
+            <span className="font-serif text-2xl font-semibold tracking-tight text-accent">
+              Chevillette.fr
+            </span>
           </Link>
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent">
             <span className="w-1.5 h-1.5 rounded-full bg-accent" /> Estimation

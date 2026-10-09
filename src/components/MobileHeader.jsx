@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
-import Logo from "@/components/Logo";
+import { ChevronLeft, Home as HomeIcon } from "lucide-react";
 
 const ROUTES = ["/", "/estimation", "/settings"];
 const TITLES = {
@@ -30,9 +29,14 @@ export default function MobileHeader() {
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-3">
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary dark:bg-card text-accent ring-1 ring-accent/30">
+            <HomeIcon className="w-8 h-8" />
+          </span>
           {isHome ? (
-            <Logo height={36} />
+            <span className="font-serif text-2xl font-semibold tracking-tight text-accent">
+              Chevillette.fr
+            </span>
           ) : (
             <span className="font-heading font-semibold text-primary">{TITLES[location.pathname]}</span>
           )}

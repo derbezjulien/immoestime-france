@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Calculator, TrendingUp, ShieldCheck } from "lucide-react";
+import { Home as HomeIcon, MapPin, Calculator, TrendingUp, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Logo from "@/components/Logo";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import useSeo from "@/hooks/use-seo";
 
@@ -20,7 +19,9 @@ export default function Home() {
           }}
         />
         <div className="relative max-w-5xl mx-auto px-6 py-24 text-center">
-          <Logo height={140} className="mb-6" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary text-primary-foreground shadow-soft mb-6 ring-1 ring-accent/30">
+            <HomeIcon className="w-8 h-8" />
+          </div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 text-accent text-xs font-semibold px-3 py-1 mb-5 ring-1 ring-accent/25">
             <ShieldCheck className="w-3.5 h-3.5" /> Données officielles de l'État
           </span>
