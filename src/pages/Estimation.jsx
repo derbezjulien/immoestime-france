@@ -12,6 +12,7 @@ import SaleDetailDialog from "@/components/SaleDetailDialog";
 import AdBanner from "@/components/AdBanner";
 import VetusteSlider from "@/components/VetusteSlider";
 import DownloadAttestationButton from "@/components/DownloadAttestationButton";
+import PriceTrendCard from "@/components/PriceTrendCard";
 import useSeo from "@/hooks/use-seo";
 
 const euro = new Intl.NumberFormat("fr-FR", {
@@ -149,7 +150,24 @@ export default function Estimation() {
       const coefVetuste = vetusteCoefficient(Number(vetuste));
       const estimatedPrice = avgPerSqm * Number(surface) * coefVetuste;
 
-      setResult({ estimatedPrice, averagePricePerSqm: avgPerSqm, sampleSize: sales.length });
+      // Tendance du prix au m² par année (3 dernières années)
+      const yearlyStats = {};
+      sales.forEach((s) => {
+        const year = (s.date_mutation || "").substring(0, 4);
+        if (!year) return;
+        if (!yearlyStats[year]) yearlyStats[year] = { sum: 0, count: 0 };
+        yearlyStats[year].sum += s.valeur_fonciere / s.surface_reelle_bati;
+        yearlyStats[year].count++;
+      });
+      const trendData = Object.keys(yearlyStats)
+        .sort()
+        .map((year) => ({
+          year,
+          avgPerSqm: Math.round(yearlyStats[year].sum / yearlyStats[year].count),
+          count: yearlyStats[year].count,
+        }));
+
+      setResult({ estimatedPrice, averagePricePerSqm: avgPerSqm, sampleSize: sales.length, trendData });
       setRecentSales(
         [...sales]
           .sort((a, b) => (b.date_mutation || "").localeCompare(a.date_mutation || ""))
@@ -427,6 +445,10 @@ export default function Estimation() {
                 }}
               />
             </div>
+
+            {!result.fallback && result.trendData && result.trendData.length >= 2 && (
+              <PriceTrendCard trendData={result.trendData} />
+            )}
 
             {!result.fallback && (
               <>
