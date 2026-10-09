@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-const SITE_URL = "https://indiceimmo.org";
-const SITE_NAME = "L'Indice Immo";
+const SITE_URL = "https://chevillette.fr";
+const SITE_NAME = "Chevillette.fr";
 
 function setMeta(doc, attr, key, content) {
   let el = doc.head.querySelector("meta[" + attr + '="' + key + '"]');

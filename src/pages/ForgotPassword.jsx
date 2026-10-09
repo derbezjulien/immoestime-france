@@ -9,7 +9,7 @@ import AuthLayout from "@/components/AuthLayout";
 import useSeo from "@/hooks/use-seo";
 
 export default function ForgotPassword() {
-  useSeo({ title: "Mot de passe oublié | L'Indice Immo", path: "/forgot-password", noindex: true });
+  useSeo({ title: "Mot de passe oublié | Chevillette.fr", path: "/forgot-password", noindex: true });
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);

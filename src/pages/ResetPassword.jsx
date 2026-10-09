@@ -9,7 +9,7 @@ import AuthLayout from "@/components/AuthLayout";
 import useSeo from "@/hooks/use-seo";
 
 export default function ResetPassword() {
-  useSeo({ title: "Nouveau mot de passe | L'Indice Immo", path: "/reset-password", noindex: true });
+  useSeo({ title: "Nouveau mot de passe | Chevillette.fr", path: "/reset-password", noindex: true });
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("token");
 

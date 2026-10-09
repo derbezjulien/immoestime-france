@@ -21,7 +21,7 @@ export default function PdfTemplate({ data }) {
       <div className="bg-slate-900 text-white rounded-xl p-6 mb-8 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Home className="w-9 h-9 text-yellow-500" />
-          <span className="text-3xl font-bold tracking-tight">L'Indice Immo</span>
+          <span className="text-3xl font-bold tracking-tight">Chevillette.fr</span>
         </div>
         <div className="text-right">
           <div className="text-sm font-semibold text-yellow-500">Estimation indicative</div>

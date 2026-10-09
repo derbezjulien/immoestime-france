@@ -17,7 +17,7 @@ import {
 import useSeo from "@/hooks/use-seo";
 
 export default function Settings() {
-  useSeo({ title: "Paramètres | L'Indice Immo", path: "/settings", noindex: true });
+  useSeo({ title: "Paramètres | Chevillette.fr", path: "/settings", noindex: true });
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);

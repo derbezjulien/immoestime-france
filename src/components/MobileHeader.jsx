@@ -4,7 +4,7 @@ import { ChevronLeft, Home as HomeIcon } from "lucide-react";
 
 const ROUTES = ["/", "/estimation", "/settings"];
 const TITLES = {
-  "/": "L'Indice Immo",
+  "/": "Chevillette.fr",
   "/estimation": "Estimation",
   "/settings": "Paramètres",
 };
@@ -35,7 +35,7 @@ export default function MobileHeader() {
           </span>
           {isHome ? (
             <span className="font-serif text-2xl font-semibold tracking-tight text-accent">
-              L'Indice Immo
+              Chevillette.fr
             </span>
           ) : (
             <span className="font-heading font-semibold text-primary">{TITLES[location.pathname]}</span>

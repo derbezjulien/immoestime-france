@@ -14,7 +14,7 @@ function Section({ title, children }) {
 }
 
 export default function Confidentialite() {
-  useSeo({ title: "Politique de confidentialité | L'Indice Immo", description: "Politique de confidentialité de L'Indice Immo : données collectées, finalité, conservation et droits RGPD.", path: "/confidentialite" });
+  useSeo({ title: "Politique de confidentialité | Chevillette.fr", description: "Politique de confidentialité de Chevillette.fr : données collectées, finalité, conservation et droits RGPD.", path: "/confidentialite" });
   return (
     <div className="min-h-screen bg-background">
       <main className="max-w-3xl mx-auto px-6 py-10">
@@ -27,7 +27,7 @@ export default function Confidentialite() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-              La protection de vos données personnelles est une priorité pour L'Indice Immo. Cette page vous explique comment nous traitons vos données lors de votre navigation sur www.indiceimmo.org.
+              La protection de vos données personnelles est une priorité pour Chevillette.fr. Cette page vous explique comment nous traitons vos données lors de votre navigation sur www.chevillette.fr.
             </p>
             <Section title="1. Collecte des données">
               <p>L'utilisation de l'outil d'estimation est gratuite et ne nécessite pas la création d'un compte utilisateur.</p>

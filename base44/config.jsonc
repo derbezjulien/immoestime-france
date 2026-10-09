@@ -1,5 +1,5 @@
 {
-  "name": "L'Indice Immo",
+  "name": "Chevillette.fr",
   "site": {
     "installCommand": "npm install",
     "buildCommand": "npm run build",

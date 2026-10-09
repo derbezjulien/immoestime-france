@@ -11,7 +11,7 @@ import { safeReturnTo } from "@/lib/authReturnTo";
 import useSeo from "@/hooks/use-seo";
 
 export default function Login() {
-  useSeo({ title: "Connexion | L'Indice Immo", path: "/login", noindex: true });
+  useSeo({ title: "Connexion | Chevillette.fr", path: "/login", noindex: true });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

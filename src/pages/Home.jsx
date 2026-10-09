@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import useSeo from "@/hooks/use-seo";
 
 export default function Home() {
-  useSeo({ title: "Estimation immobilière gratuite en ligne | L'Indice Immo", description: "Estimez gratuitement votre maison ou appartement à partir des ventes réelles de votre commune (DVF, données de l'État). Estimation indicative.", path: "/" });
+  useSeo({ title: "Estimation immobilière gratuite en ligne | Chevillette.fr", description: "Estimez gratuitement votre maison ou appartement à partir des ventes réelles de votre commune (DVF, données de l'État). Estimation indicative.", path: "/" });
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}

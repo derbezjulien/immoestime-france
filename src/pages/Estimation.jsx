@@ -68,7 +68,7 @@ function computeTerrainValue(surfaceTerrain, prixMoyen) {
 }
 
 export default function Estimation() {
-  useSeo({ title: "Estimer mon bien gratuitement : prix au m² | L'Indice Immo", description: "Indiquez adresse, surface et état de votre bien : obtenez gratuitement une valeur indicative d'après les ventes récentes de votre commune (DVF).", path: "/estimation" });
+  useSeo({ title: "Estimer mon bien gratuitement : prix au m² | Chevillette.fr", description: "Indiquez adresse, surface et état de votre bien : obtenez gratuitement une valeur indicative d'après les ventes récentes de votre commune (DVF).", path: "/estimation" });
   const { toast } = useToast();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -227,7 +227,7 @@ export default function Estimation() {
               <HomeIcon className="w-8 h-8" />
             </span>
             <span className="font-serif text-2xl font-semibold tracking-tight text-accent">
-              L'Indice Immo
+              Chevillette.fr
             </span>
           </Link>
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent">

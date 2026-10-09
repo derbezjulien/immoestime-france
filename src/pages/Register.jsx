@@ -13,7 +13,7 @@ import { safeReturnTo } from "@/lib/authReturnTo";
 import useSeo from "@/hooks/use-seo";
 
 export default function Register() {
-  useSeo({ title: "Créer un compte | L'Indice Immo", path: "/register", noindex: true });
+  useSeo({ title: "Créer un compte | Chevillette.fr", path: "/register", noindex: true });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
