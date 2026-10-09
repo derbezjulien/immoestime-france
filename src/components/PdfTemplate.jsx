@@ -1,5 +1,6 @@
 import React from "react";
-import { Home, MapPin, Maximize, Hammer, Trees } from "lucide-react";
+import { MapPin, Maximize, Hammer, Trees } from "lucide-react";
+import Logo from "@/components/Logo";
 
 // Formatage montant en euros, sans espaces insécables problématiques.
 const fmtEuro = (n) =>
@@ -19,10 +20,7 @@ export default function PdfTemplate({ data }) {
     <div className="w-[800px] h-[1131px] bg-white text-gray-900 font-sans p-10 flex flex-col">
       {/* === Header === */}
       <div className="bg-slate-900 text-white rounded-xl p-6 mb-8 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <Home className="w-9 h-9 text-yellow-500" />
-          <span className="text-3xl font-bold tracking-tight">Chevillette.fr</span>
-        </div>
+        <Logo height={56} />
         <div className="text-right">
           <div className="text-sm font-semibold text-yellow-500">Estimation indicative</div>
           <div className="text-xs text-gray-300 mt-1">Éditée le {today}</div>
